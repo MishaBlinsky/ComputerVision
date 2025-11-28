@@ -86,3 +86,38 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord("q"): break
 vid.release()
 cv2.destroyAllWindows()
+
+# TASK 8
+
+def pick_color(p):
+    dR = math.dist(p,[0,1,0]); dG = math.dist(p,[0,0,1]); dB = math.dist(p,[1,0,0])
+    if dR >= dG and dR >= dB: return (255,0,0)
+    elif dG >= dR and dG >= dB: return (0,255,0)
+    else: return (0,0,255)
+vid = cv2.VideoCapture(0)
+ok, img = vid.read()
+w = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
+h = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
+while True:
+    ok, img = vid.read()
+    height = img.shape[0]; width = img.shape[1]
+    hc = height // 2; wc = width // 2
+    fillColor = pick_color(img[hc,wc])
+    cv2.rectangle(img, (wc - 25 // 2, hc - 50), (wc + 25 // 2, hc + 50), fillColor, cv2.FILLED)
+    cv2.rectangle(img, (wc - 25 // 2, hc - 50), (wc + 25 // 2, hc + 50), (0,0,255), 4)
+    cv2.rectangle(img, (wc - 50, hc - 25 // 2), (wc + 50, hc + 25 // 2), fillColor, cv2.FILLED)
+    cv2.rectangle(img, (wc - 50, hc - 25 // 2), (wc + 50, hc + 25 // 2), (0,0,255), 4)
+    cv2.rectangle(img, (wc - 25 // 2 + 3, hc - 25 // 2 - 2), (wc + 25 // 2 - 3, hc + 25 // 2 + 2), fillColor, cv2.FILLED)
+    cv2.imshow('img', img)
+    if cv2.waitKey(1) & 0xFF == ord("q"): break
+vid.release()
+cv2.destroyAllWindows()
+
+# TASK 9
+
+cap = cv2.VideoCapture(r"http://[REDACTED]:8080/video")
+while cap.isOpened():
+    ok, img = cap.read()
+    cv2.imshow('cam', cv2.resize(img, (640,480)))
+    if cv2.waitKey(1) & 0xFF == ord("q"): break
+cap.release()
